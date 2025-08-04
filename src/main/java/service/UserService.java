@@ -1,6 +1,7 @@
 package service;
 
 import model.User;
+import util.IDGenerator;
 
 import java.io.*;
 import java.util.*;
@@ -25,6 +26,39 @@ public class UserService {
     public List<User> getAll() {
         return new ArrayList<>(users);
     }
+
+    public User register(String username, String role) {
+        boolean exists = users.stream()
+                .anyMatch(u -> u.getUsername().equalsIgnoreCase(username) &&
+                        u.getRole().equalsIgnoreCase(role));
+
+        if (exists) {
+            throw new RuntimeException("❌ User already exists with this username and role.");
+        }
+
+        int id = IDGenerator.generateId();
+        User user = new User(id, username, role);
+        users.add(user);
+        save();
+        return user;
+    }
+
+    public boolean exists(String username, String role) {
+        return getAll().stream()
+                .anyMatch(u -> u.getUsername().equalsIgnoreCase(username) && u.getRole().equalsIgnoreCase(role));
+    }
+
+
+
+    public User findByUsernameAndRole(String username, String role) {
+        for (User user : users) {
+            if (user.getUsername().equalsIgnoreCase(username) && user.getRole().equalsIgnoreCase(role)) {
+                return user;
+            }
+        }
+        return null;
+    }
+
 
     private void load() {
         users.clear();

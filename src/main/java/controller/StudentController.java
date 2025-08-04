@@ -10,6 +10,7 @@ import util.ListUtil;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class StudentController {
     private final AttendanceService attendanceService = new AttendanceService();
@@ -22,15 +23,13 @@ public class StudentController {
             System.out.println("2. View Grades");
             System.out.println("3. Logout");
 
-            int choice;
-            try {
-                choice = InputHelper.readInt("> ");
-            } catch (RuntimeException e) {
-                System.out.println("⛔ " + e.getMessage());
+            Optional<Integer> choiceOpt = InputHelper.readInt("> ");
+            if (choiceOpt.isEmpty()) {
+                System.out.println("⛔ Cancelled.");
                 continue;
             }
 
-            switch (choice) {
+            switch (choiceOpt.get()) {
                 case 1 -> viewAttendance(user.getId());
                 case 2 -> viewGrades(user.getId());
                 case 3 -> {
@@ -49,8 +48,8 @@ public class StudentController {
             return;
         }
 
-        boolean sort = InputHelper.readYesNo("Sort by date?");
-        if (sort) {
+        Optional<Boolean> sortOpt = InputHelper.readYesNo("Sort by date?");
+        if (sortOpt.isPresent() && sortOpt.get()) {
             records = ListUtil.sort(records, Comparator.comparing(Attendance::getDate));
         }
 
@@ -66,8 +65,8 @@ public class StudentController {
             return;
         }
 
-        boolean sort = InputHelper.readYesNo("Sort by score?");
-        if (sort) {
+        Optional<Boolean> sortOpt = InputHelper.readYesNo("Sort by score?");
+        if (sortOpt.isPresent() && sortOpt.get()) {
             grades = ListUtil.sort(grades, Comparator.comparingDouble(Grade::getScore));
         }
 

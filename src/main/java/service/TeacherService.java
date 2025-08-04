@@ -15,16 +15,21 @@ public class TeacherService {
         load();
     }
 
-    public Teacher add(String name) {
-        int id = IDGenerator.generateId();
-        Teacher teacher = new Teacher(id, name);
+    public void add(Teacher teacher) {
         FileUtil.appendLine(FILE, teacher.toText());
-        return teacher;
     }
 
     public List<Teacher> getAll() {
         return new ArrayList<>(teachers);
     }
+
+    public Teacher getById(int id) {
+        return getAll().stream()
+                .filter(t -> t.getId() == id)
+                .findFirst()
+                .orElse(null);
+    }
+
 
     private void load() {
         teachers.clear();

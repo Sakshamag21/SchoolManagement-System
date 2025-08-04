@@ -1,46 +1,69 @@
 package util;
 
-import model.Course;
-import model.Student;
+import model.Teacher;
 import service.CourseService;
 import service.StudentService;
+import service.TeacherService;
+
+import java.util.Optional;
 
 public class ValidationHelper {
 
     public static Integer readValidStudentId(StudentService studentService) {
-        try {
-            int id = InputHelper.readInt("Enter Student ID (or 'exit'): ");
-            Student s = studentService.getById(id);
-            if (s == null) {
-                System.out.println("❌ Student not found.");
-                return null;
+        while (true) {
+            Optional<String> inputOpt = InputHelper.readLine("Enter Student ID (or 'exit'): ");
+            if (inputOpt.isEmpty()) return null;
+
+            String input = inputOpt.get();
+            try {
+                int id = Integer.parseInt(input);
+                if (studentService.getById(id) != null) {
+                    return id;
+                } else {
+                    System.out.println("❌ Student not found.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid number.");
             }
-            System.out.println("✅ Found student: " + s.getName());
-            return id;
-        } catch (RuntimeException e) {
-            System.out.println("⛔ " + e.getMessage());
-            return null;
+        }
+    }
+
+    public static Integer readValidTeacherId(TeacherService teacherService) {
+        while (true) {
+            Optional<String> inputOpt = InputHelper.readLine("Enter Teacher ID (or 'exit'): ");
+            if (inputOpt.isEmpty()) return null;
+
+            String input = inputOpt.get();
+            try {
+                int id = Integer.parseInt(input);
+                Teacher teacher = teacherService.getById(id);
+                if (teacher != null) {
+                    return id;
+                } else {
+                    System.out.println("❌ Teacher not found.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid number.");
+            }
         }
     }
 
     public static Integer readValidCourseId(CourseService courseService) {
-        try {
-            int id = InputHelper.readInt("Enter Course ID (or 'exit'): ");
-            Course c = courseService.getAll()
-                    .stream()
-                    .filter(course -> course.getId() == id)
-                    .findFirst()
-                    .orElse(null);
+        while (true) {
+            Optional<String> inputOpt = InputHelper.readLine("Enter Course ID (or 'exit'): ");
+            if (inputOpt.isEmpty()) return null;
 
-            if (c == null) {
-                System.out.println("❌ Course not found.");
-                return null;
+            String input = inputOpt.get();
+            try {
+                int id = Integer.parseInt(input);
+                if (courseService.getById(id) != null) {
+                    return id;
+                } else {
+                    System.out.println("❌ Course not found.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid number.");
             }
-            System.out.println("✅ Found course: " + c.getName());
-            return id;
-        } catch (RuntimeException e) {
-            System.out.println("⛔ " + e.getMessage());
-            return null;
         }
     }
 }

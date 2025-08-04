@@ -14,6 +14,7 @@ import util.ValidationHelper;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 public class TeacherController {
     private final AttendanceService attendanceService = new AttendanceService();
@@ -29,15 +30,13 @@ public class TeacherController {
             System.out.println("3. List Students by GPA");
             System.out.println("4. Logout");
 
-            int choice;
-            try {
-                choice = InputHelper.readInt("> ");
-            } catch (RuntimeException e) {
-                System.out.println("⛔ " + e.getMessage());
+            Optional<Integer> choiceOpt = InputHelper.readInt("> ");
+            if (choiceOpt.isEmpty()) {
+                System.out.println("⛔ Cancelled.");
                 continue;
             }
 
-            switch (choice) {
+            switch (choiceOpt.get()) {
                 case 1 -> markAttendance();
                 case 2 -> assignGrade();
                 case 3 -> listStudentsSortedByGpa();
@@ -51,42 +50,62 @@ public class TeacherController {
     }
 
     private void markAttendance() {
-        try {
-            Integer studentId = ValidationHelper.readValidStudentId(studentService);
-            if (studentId == null) return;
-
-            String date = InputHelper.readLine("Date (yyyy-mm-dd): ");
-            boolean present = InputHelper.readYesNo("Is present?");
-            attendanceService.mark(new Attendance(studentId, date, present));
-            System.out.println("✅ Attendance recorded.");
-        } catch (RuntimeException e) {
-            System.out.println("⛔ " + e.getMessage());
+        Integer studentId = ValidationHelper.readValidStudentId(studentService);
+        if (studentId == null) {
+            System.out.println("⛔ Cancelled.");
+            return;
         }
+
+        Optional<String> dateOpt = InputHelper.readLine("Date (yyyy-mm-dd): ");
+        if (dateOpt.isEmpty()) {
+            System.out.println("⛔ Cancelled.");
+            return;
+        }
+
+        Optional<Boolean> presentOpt = InputHelper.readYesNo("Is present?");
+        if (presentOpt.isEmpty()) {
+            System.out.println("⛔ Cancelled.");
+            return;
+        }
+
+        attendanceService.mark(new Attendance(studentId, dateOpt.get(), presentOpt.get()));
+        System.out.println("✅ Attendance recorded.");
     }
 
     private void assignGrade() {
-        try {
-            Integer studentId = ValidationHelper.readValidStudentId(studentService);
-            if (studentId == null) return;
-
-            Integer courseId = ValidationHelper.readValidCourseId(courseService);
-            if (courseId == null) return;
-
-            double score = InputHelper.readDouble("Score: ");
-            gradeService.assign(new Grade(studentId, courseId, score));
-            System.out.println("✅ Grade assigned.");
-        } catch (RuntimeException e) {
-            System.out.println("⛔ " + e.getMessage());
+        Integer studentId = ValidationHelper.readValidStudentId(studentService);
+        if (studentId == null) {
+            System.out.println("⛔ Cancelled.");
+            return;
         }
+
+        Integer courseId = ValidationHelper.readValidCourseId(courseService);
+        if (courseId == null) {
+            System.out.println("⛔ Cancelled.");
+            return;
+        }
+
+        Optional<Double> scoreOpt = InputHelper.readDouble("Score: ");
+        if (scoreOpt.isEmpty()) {
+            System.out.println("⛔ Cancelled.");
+            return;
+        }
+
+        gradeService.assign(new Grade(studentId, courseId, scoreOpt.get()));
+        System.out.println("✅ Grade assigned.");
     }
 
     private void listStudentsSortedByGpa() {
         List<Student> students = studentService.getAll();
-        boolean ascending = InputHelper.readYesNo("Sort GPA ascending? (No = descending)");
-        Comparator<Student> comparator = Comparator.comparingDouble(Student::getGpa);
-        if (!ascending) comparator = comparator.reversed();
-        students = ListUtil.sort(students, comparator);
 
+        Optional<Boolean> ascendingOpt = InputHelper.readYesNo("Sort GPA ascending? (No = descending)");
+        Comparator<Student> comparator = Comparator.comparingDouble(Student::getGpa);
+
+        if (ascendingOpt.isPresent() && !ascendingOpt.get()) {
+            comparator = comparator.reversed();
+        }
+
+        students = ListUtil.sort(students, comparator);
         for (Student s : students) {
             System.out.println(s);
         }
