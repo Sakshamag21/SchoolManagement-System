@@ -2,7 +2,7 @@ package model;
 
 public class Attendance {
     private int studentId;
-    private String date; // Use format yyyy-MM-dd
+    private String date;
     private boolean present;
 
     public Attendance(int studentId, String date, boolean present) {

@@ -19,10 +19,6 @@ public class UserService {
         save();
     }
 
-    public User getByUsername(String username) {
-        return users.stream().filter(u -> u.getUsername().equalsIgnoreCase(username)).findFirst().orElse(null);
-    }
-
     public List<User> getAll() {
         return new ArrayList<>(users);
     }
@@ -33,7 +29,7 @@ public class UserService {
                         u.getRole().equalsIgnoreCase(role));
 
         if (exists) {
-            throw new RuntimeException("❌ User already exists with this username and role.");
+            throw new RuntimeException("User already exists with this username and role.");
         }
 
         int id = IDGenerator.generateId();
@@ -51,7 +47,7 @@ public class UserService {
 
 
     public User findByUsernameAndRole(String username, String role) {
-        load(); // <-- this forces re-read from file
+        load();
         return users.stream()
                 .filter(u -> u.getUsername().equalsIgnoreCase(username) &&
                         u.getRole().equalsIgnoreCase(role))
@@ -77,7 +73,7 @@ public class UserService {
                 pw.println(u.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Could not save users.");
+            System.out.println("Could not save users.");
         }
     }
 }

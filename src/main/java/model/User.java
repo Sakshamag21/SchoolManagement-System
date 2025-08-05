@@ -10,15 +10,12 @@ public class User {
         this.username = username;
         this.role = role;
     }
-
     public int getId() { return id; }
     public String getUsername() { return username; }
     public String getRole() { return role; }
-
     public String toText() {
         return id + "," + username + "," + role;
     }
-
     public static User fromText(String line) {
         String[] parts = line.split(",");
         return new User(

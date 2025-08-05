@@ -39,10 +39,7 @@ public class GradeService {
         for (Grade g : studentGrades) {
             total += g.getScore();
         }
-
         double gpa = total / studentGrades.size();
-
-        // Now update in students.txt
         StudentService studentService = new StudentService();
         studentService.updateGpa(studentId, gpa);
     }
@@ -64,7 +61,7 @@ public class GradeService {
                 pw.println(g.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Could not save grades.");
+            System.out.println("Could not save grades.");
         }
     }
 }

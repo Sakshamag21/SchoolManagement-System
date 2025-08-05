@@ -10,7 +10,6 @@ public class Course {
         this.name = name;
         this.teacherId = teacherId;
     }
-
     public int getId() { return id; }
     public String getName() { return name; }
     public int getTeacherId() { return teacherId; }
@@ -18,7 +17,6 @@ public class Course {
     public String toText() {
         return id + "," + name + "," + teacherId;
     }
-
     public static Course fromText(String line) {
         String[] parts = line.split(",");
         return new Course(

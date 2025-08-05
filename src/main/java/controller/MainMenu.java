@@ -23,7 +23,7 @@ public class MainMenu {
 
             Optional<Integer> choiceOpt = InputHelper.readInt("> ");
             if (choiceOpt.isEmpty()) {
-                System.out.println("⛔ Cancelled.");
+                System.out.println(" Cancelled.");
                 continue;
             }
 
@@ -34,7 +34,7 @@ public class MainMenu {
                     System.out.println("Goodbye!");
                     return;
                 }
-                default -> System.out.println("❌ Invalid choice");
+                default -> System.out.println("Invalid choice");
             }
         }
     }
@@ -42,13 +42,13 @@ public class MainMenu {
     private void login() {
         Optional<String> usernameOpt = InputHelper.readLine("Username: ");
         if (usernameOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println("Cancelled.");
             return;
         }
 
         Optional<String> roleOpt = InputHelper.readLine("Role (admin / teacher / student): ");
         if (roleOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println("Cancelled.");
             return;
         }
 
@@ -58,30 +58,30 @@ public class MainMenu {
         User user = userService.findByUsernameAndRole(username, role);
 
         if (user == null) {
-            System.out.println("❌ Invalid credentials or role.");
+            System.out.println("Invalid credentials or role.");
             return;
         }
 
-        System.out.println("✅ Login successful as " + user.getRole());
+        System.out.println(" Login successful as " + user.getRole());
 
         switch (user.getRole()) {
             case "admin" -> new AdminController().start(user);
             case "teacher" -> new TeacherController().start(user);
             case "student" -> new StudentController().start(user);
-            default -> System.out.println("❌ Unknown role.");
+            default -> System.out.println(" Unknown role.");
         }
     }
 
     private void register() {
         Optional<String> usernameOpt = InputHelper.readLine("Choose username: ");
         if (usernameOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         Optional<String> roleOpt = InputHelper.readLine("Role (student/teacher/admin): ");
         if (roleOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
@@ -89,15 +89,13 @@ public class MainMenu {
         String role = roleOpt.get().toLowerCase();
 
         if (!role.equals("student") && !role.equals("teacher") && !role.equals("admin")) {
-            System.out.println("❌ Invalid role.");
+            System.out.println(" Invalid role.");
             return;
         }
 
         try {
             User user = userService.register(username, role);
-            System.out.println("✅ Registered successfully. You can now login.");
-
-            // Also create their associated model entries
+            System.out.println(" Registered successfully. You can now login.");
             if (role.equals("student")) {
                 new StudentService().add(new Student(user.getId(), username, 0.0));
             }

@@ -29,10 +29,9 @@ public class TeacherController {
             System.out.println("2. Assign Grade");
             System.out.println("3. List Students by GPA");
             System.out.println("4. Logout");
-
             Optional<Integer> choiceOpt = InputHelper.readInt("> ");
             if (choiceOpt.isEmpty()) {
-                System.out.println("⛔ Cancelled.");
+                System.out.println(" Cancelled.");
                 continue;
             }
 
@@ -44,55 +43,52 @@ public class TeacherController {
                     System.out.println("Logging out...");
                     return;
                 }
-                default -> System.out.println("❌ Invalid option");
+                default -> System.out.println("Invalid option");
             }
         }
     }
-
     private void markAttendance() {
         Integer studentId = ValidationHelper.readValidStudentId(studentService);
         if (studentId == null) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
-
         Optional<String> dateOpt = InputHelper.readLine("Date (yyyy-mm-dd): ");
         if (dateOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         Optional<Boolean> presentOpt = InputHelper.readYesNo("Is present?");
         if (presentOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         attendanceService.mark(new Attendance(studentId, dateOpt.get(), presentOpt.get()));
-        System.out.println("✅ Attendance recorded.");
+        System.out.println(" Attendance recorded.");
     }
-
     private void assignGrade() {
         Integer studentId = ValidationHelper.readValidStudentId(studentService);
         if (studentId == null) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         Integer courseId = ValidationHelper.readValidCourseId(courseService);
         if (courseId == null) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         Optional<Double> scoreOpt = InputHelper.readDouble("Score: ");
         if (scoreOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         gradeService.assign(new Grade(studentId, courseId, scoreOpt.get()));
-        System.out.println("✅ Grade assigned.");
+        System.out.println(" Grade assigned.");
     }
 
     private void listStudentsSortedByGpa() {

@@ -20,10 +20,10 @@ public class ValidationHelper {
                 if (studentService.getById(id) != null) {
                     return id;
                 } else {
-                    System.out.println("❌ Student not found.");
+                    System.out.println("Student not found.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid number.");
+                System.out.println("Invalid number.");
             }
         }
     }
@@ -40,10 +40,10 @@ public class ValidationHelper {
                 if (teacher != null) {
                     return id;
                 } else {
-                    System.out.println("❌ Teacher not found.");
+                    System.out.println("Teacher not found.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid number.");
+                System.out.println("Invalid number.");
             }
         }
     }
@@ -59,10 +59,10 @@ public class ValidationHelper {
                 if (courseService.getById(id) != null) {
                     return id;
                 } else {
-                    System.out.println("❌ Course not found.");
+                    System.out.println("Course not found.");
                 }
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid number.");
+                System.out.println("Invalid number.");
             }
         }
     }

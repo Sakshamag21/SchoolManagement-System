@@ -25,7 +25,7 @@ public class StudentController {
 
             Optional<Integer> choiceOpt = InputHelper.readInt("> ");
             if (choiceOpt.isEmpty()) {
-                System.out.println("⛔ Cancelled.");
+                System.out.println(" Cancelled.");
                 continue;
             }
 
@@ -36,7 +36,7 @@ public class StudentController {
                     System.out.println("Logging out...");
                     return;
                 }
-                default -> System.out.println("❌ Invalid option");
+                default -> System.out.println(" Invalid option");
             }
         }
     }

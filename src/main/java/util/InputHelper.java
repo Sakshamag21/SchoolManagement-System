@@ -14,7 +14,7 @@ public class InputHelper {
             try {
                 return Optional.of(Integer.parseInt(input));
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid number. Try again.");
+                System.out.println("Invalid number. Try again.");
             }
         }
     }
@@ -27,7 +27,7 @@ public class InputHelper {
             try {
                 return Optional.of(Double.parseDouble(input));
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid decimal number. Try again.");
+                System.out.println("Invalid decimal number. Try again.");
             }
         }
     }
@@ -46,7 +46,7 @@ public class InputHelper {
             if (input.equalsIgnoreCase("exit")) return Optional.empty();
             if (input.equals("y") || input.equals("yes")) return Optional.of(true);
             if (input.equals("n") || input.equals("no")) return Optional.of(false);
-            System.out.println("❌ Please enter y/n or exit.");
+            System.out.println("Please enter y/n or exit.");
         }
     }
 }

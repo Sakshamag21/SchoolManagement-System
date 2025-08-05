@@ -33,7 +33,7 @@ public class AdminController {
 
             Optional<Integer> choiceOpt = InputHelper.readInt("> ");
             if (choiceOpt.isEmpty()) {
-                System.out.println("⛔ Cancelled.");
+                System.out.println(" Cancelled.");
                 continue;
             }
 
@@ -46,7 +46,7 @@ public class AdminController {
                     System.out.println("Logging out...");
                     return;
                 }
-                default -> System.out.println("❌ Invalid option");
+                default -> System.out.println(" Invalid option");
             }
         }
     }
@@ -54,7 +54,7 @@ public class AdminController {
     private void addTeacher() {
         Optional<String> nameOpt = InputHelper.readLine("Enter teacher name (or 'exit'): ");
         if (nameOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
@@ -63,27 +63,20 @@ public class AdminController {
         UserService userService = new UserService();
         TeacherService teacherService = new TeacherService();
 
-        // ✅ Check if this username already exists as teacher
         if (userService.exists(name, "teacher")) {
-            System.out.println("❌ A teacher with this username already exists.");
+            System.out.println(" A teacher with this username already exists.");
             return;
         }
 
         try {
-            // ✅ Generate ID manually (don't call register)
             int id = IDGenerator.generateId();
-
-            // ✅ Add to users.txt
             User user = new User(id, name, "teacher");
-            userService.add(user);  // make sure this calls save()
-
-            // ✅ Add to teachers.txt
+            userService.add(user);
             Teacher teacher = new Teacher(id, name);
             teacherService.add(teacher);
-
             System.out.println("✅ Teacher added with ID: " + id);
         } catch (RuntimeException e) {
-            System.out.println("⛔ " + e.getMessage());
+            System.out.println(" " + e.getMessage());
         }
     }
 
@@ -92,13 +85,13 @@ public class AdminController {
     private void addCourse() {
         Optional<String> courseNameOpt = InputHelper.readLine("Enter course name (or 'exit'): ");
         if (courseNameOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
         Integer teacherId = ValidationHelper.readValidTeacherId(teacherService);
         if (teacherId == null) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
 
@@ -112,12 +105,10 @@ public class AdminController {
             System.out.println("No courses found.");
             return;
         }
-
         Optional<Boolean> sortOpt = InputHelper.readYesNo("Sort by name?");
         if (sortOpt.isPresent() && sortOpt.get()) {
             courses = ListUtil.sort(courses, Comparator.comparing(Course::getName));
         }
-
         for (Course c : courses) {
             System.out.printf("ID: %d | Name: %s | Teacher ID: %d\n", c.getId(), c.getName(), c.getTeacherId());
         }
@@ -128,10 +119,9 @@ public class AdminController {
 
         Optional<Double> gpaOpt = InputHelper.readDouble("Enter minimum GPA to filter: ");
         if (gpaOpt.isEmpty()) {
-            System.out.println("⛔ Cancelled.");
+            System.out.println(" Cancelled.");
             return;
         }
-
         List<Student> filtered = ListUtil.filter(students, s -> s.getGpa() >= gpaOpt.get());
 
         Optional<Boolean> sortOpt = InputHelper.readYesNo("Sort by GPA descending?");

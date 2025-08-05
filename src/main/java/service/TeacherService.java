@@ -48,7 +48,7 @@ public class TeacherService {
                 pw.println(t.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Could not save teachers.");
+            System.out.println("Could not save teachers.");
         }
     }
 }

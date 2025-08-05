@@ -10,7 +10,6 @@ public class Grade {
         this.courseId = courseId;
         this.score = score;
     }
-
     public int getStudentId() { return studentId; }
     public int getCourseId() { return courseId; }
     public double getScore() { return score; }
@@ -18,7 +17,6 @@ public class Grade {
     public String toText() {
         return studentId + "," + courseId + "," + score;
     }
-
     public static Grade fromText(String line) {
         String[] parts = line.split(",");
         return new Grade(

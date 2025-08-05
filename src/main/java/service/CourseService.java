@@ -24,11 +24,6 @@ public class CourseService {
         return course;
     }
 
-    public void add(Course c) {
-        courses.add(c);
-        save();
-    }
-
     public List<Course> getAll() {
         load();
         return new ArrayList<>(courses);
@@ -49,7 +44,7 @@ public class CourseService {
                 courses.add(Course.fromText(line));
             }
         } catch (IOException e) {
-            System.out.println("⚠️ Could not load courses.");
+            System.out.println("Could not load courses.");
         }
     }
 
@@ -59,7 +54,7 @@ public class CourseService {
                 pw.println(c.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Could not save courses.");
+            System.out.println("Could not save courses.");
         }
     }
 }

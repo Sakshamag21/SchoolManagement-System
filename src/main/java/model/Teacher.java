@@ -10,12 +10,9 @@ public class Teacher {
     }
 
     public int getId() { return id; }
-    public String getName() { return name; }
-
     public String toText() {
         return id + "," + name;
     }
-
     public static Teacher fromText(String line) {
         String[] parts = line.split(",");
         return new Teacher(Integer.parseInt(parts[0]), parts[1]);

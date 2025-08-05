@@ -27,13 +27,9 @@ public class StudentService {
         return new ArrayList<>(students);
     }
 
-    public boolean exists(int studentId) {
-        return getById(studentId) != null;
-    }
-
     public void updateGpa(int studentId, double newGpa) {
         load();
-        List<Student> all = getAll(); // Read from file again
+        List<Student> all = getAll();
         List<Student> updated = new ArrayList<>();
 
         for (Student s : all) {
@@ -50,7 +46,7 @@ public class StudentService {
                 pw.println(s.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Failed to update GPA.");
+            System.out.println("Failed to update GPA.");
         }
     }
 
@@ -73,7 +69,7 @@ public class StudentService {
                 pw.println(s.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Could not save students.");
+            System.out.println("Could not save students.");
         }
     }
 }

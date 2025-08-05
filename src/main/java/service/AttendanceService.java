@@ -1,7 +1,6 @@
 package service;
 
 import model.Attendance;
-
 import java.io.*;
 import java.util.*;
 
@@ -12,12 +11,10 @@ public class AttendanceService {
     public AttendanceService() {
         load();
     }
-
     public void mark(Attendance a) {
         records.add(a);
         save();
     }
-
     public List<Attendance> getByStudentId(int studentId) {
         load();
         List<Attendance> result = new ArrayList<>();
@@ -45,7 +42,7 @@ public class AttendanceService {
                 pw.println(a.toText());
             }
         } catch (IOException e) {
-            System.out.println("❌ Could not save attendance.");
+            System.out.println("Could not save attendance.");
         }
     }
 }

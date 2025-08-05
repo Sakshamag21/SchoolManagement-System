@@ -13,7 +13,7 @@ public class IDGenerator {
         loadIds();
     }
 
-    private static final AtomicInteger counter = new AtomicInteger(1000); // start from 1000
+    private static final AtomicInteger counter = new AtomicInteger(1000);
 
     public static int generateId() {
         return counter.getAndIncrement();
@@ -30,25 +30,9 @@ public class IDGenerator {
                 idMap.put(parts[0], Integer.parseInt(parts[1]));
             }
         } catch (IOException e) {
-            System.out.println("❌ Failed to load ID tracker.");
+            System.out.println("Failed to load ID tracker.");
         }
     }
 
-    private static void saveIds() {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_PATH))) {
-            for (Map.Entry<String, Integer> entry : idMap.entrySet()) {
-                pw.println(entry.getKey() + "=" + entry.getValue());
-            }
-        } catch (IOException e) {
-            System.out.println("❌ Failed to save ID tracker.");
-        }
-    }
 
-    public static int getNextId(String key) {
-        int current = idMap.getOrDefault(key, 1000);
-        int next = current + 1;
-        idMap.put(key, next);
-        saveIds();
-        return next;
-    }
 }
