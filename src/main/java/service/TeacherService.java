@@ -20,6 +20,7 @@ public class TeacherService {
     }
 
     public List<Teacher> getAll() {
+        load();
         return new ArrayList<>(teachers);
     }
 

@@ -30,6 +30,7 @@ public class CourseService {
     }
 
     public List<Course> getAll() {
+        load();
         return new ArrayList<>(courses);
     }
 

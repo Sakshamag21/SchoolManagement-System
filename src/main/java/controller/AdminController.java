@@ -59,28 +59,34 @@ public class AdminController {
         }
 
         String name = nameOpt.get().trim().toLowerCase();
-        UserService userService = new UserService();
 
-        // Check if username already exists with role teacher
+        UserService userService = new UserService();
+        TeacherService teacherService = new TeacherService();
+
+        // ✅ Check if this username already exists as teacher
         if (userService.exists(name, "teacher")) {
             System.out.println("❌ A teacher with this username already exists.");
             return;
         }
 
         try {
-            // Register teacher in users.txt
-            User user = userService.register(name, "teacher");
+            // ✅ Generate ID manually (don't call register)
+            int id = IDGenerator.generateId();
 
-            // Add to teachers.txt
-            Teacher teacher = new Teacher(user.getId(), name);
-            new TeacherService().add(teacher);
+            // ✅ Add to users.txt
+            User user = new User(id, name, "teacher");
+            userService.add(user);  // make sure this calls save()
 
-            System.out.println("✅ Teacher added with ID: " + teacher.getId());
+            // ✅ Add to teachers.txt
+            Teacher teacher = new Teacher(id, name);
+            teacherService.add(teacher);
 
+            System.out.println("✅ Teacher added with ID: " + id);
         } catch (RuntimeException e) {
             System.out.println("⛔ " + e.getMessage());
         }
     }
+
 
 
     private void addCourse() {

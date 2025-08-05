@@ -23,12 +23,38 @@ public class StudentService {
     }
 
     public List<Student> getAll() {
+        load();
         return new ArrayList<>(students);
     }
 
     public boolean exists(int studentId) {
         return getById(studentId) != null;
     }
+
+    public void updateGpa(int studentId, double newGpa) {
+        load();
+        List<Student> all = getAll(); // Read from file again
+        List<Student> updated = new ArrayList<>();
+
+        for (Student s : all) {
+            if (s.getId() == studentId) {
+                updated.add(new Student(s.getId(), s.getName(), newGpa));
+            } else {
+                updated.add(s);
+            }
+        }
+
+        // Save updated list
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE))) {
+            for (Student s : updated) {
+                pw.println(s.toText());
+            }
+        } catch (IOException e) {
+            System.out.println("❌ Failed to update GPA.");
+        }
+    }
+
+
 
 
     private void load() {

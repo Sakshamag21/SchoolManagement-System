@@ -22,9 +22,10 @@ public class User {
     public static User fromText(String line) {
         String[] parts = line.split(",");
         return new User(
-                Integer.parseInt(parts[0]),
-                parts[1],
-                parts[2]
+                Integer.parseInt(parts[0].trim()),
+                parts[1].trim(),
+                parts[2].trim()
         );
     }
+
 }

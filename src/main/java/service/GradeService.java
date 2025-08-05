@@ -16,6 +16,8 @@ public class GradeService {
     public void assign(Grade g) {
         grades.add(g);
         save();
+        updateStudentGpa(g.getStudentId());
+
     }
 
     public List<Grade> getByStudentId(int studentId) {
@@ -27,6 +29,24 @@ public class GradeService {
         }
         return result;
     }
+
+    private void updateStudentGpa(int studentId) {
+        load();
+        List<Grade> studentGrades = getByStudentId(studentId);
+        if (studentGrades.isEmpty()) return;
+
+        double total = 0;
+        for (Grade g : studentGrades) {
+            total += g.getScore();
+        }
+
+        double gpa = total / studentGrades.size();
+
+        // Now update in students.txt
+        StudentService studentService = new StudentService();
+        studentService.updateGpa(studentId, gpa);
+    }
+
 
     private void load() {
         grades.clear();

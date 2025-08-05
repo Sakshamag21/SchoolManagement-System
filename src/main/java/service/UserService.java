@@ -51,13 +51,14 @@ public class UserService {
 
 
     public User findByUsernameAndRole(String username, String role) {
-        for (User user : users) {
-            if (user.getUsername().equalsIgnoreCase(username) && user.getRole().equalsIgnoreCase(role)) {
-                return user;
-            }
-        }
-        return null;
+        load(); // <-- this forces re-read from file
+        return users.stream()
+                .filter(u -> u.getUsername().equalsIgnoreCase(username) &&
+                        u.getRole().equalsIgnoreCase(role))
+                .findFirst()
+                .orElse(null);
     }
+
 
 
     private void load() {

@@ -19,6 +19,7 @@ public class AttendanceService {
     }
 
     public List<Attendance> getByStudentId(int studentId) {
+        load();
         List<Attendance> result = new ArrayList<>();
         for (Attendance a : records) {
             if (a.getStudentId() == studentId) {
